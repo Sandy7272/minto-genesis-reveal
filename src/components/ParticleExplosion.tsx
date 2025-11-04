@@ -14,13 +14,13 @@ export const ParticleExplosion = ({ isActive }: { isActive: boolean }) => {
 
   useEffect(() => {
     if (isActive) {
-      // Generate particles
-      const newParticles = Array.from({ length: 50 }, (_, i) => ({
+      // Generate more particles for enhanced effect
+      const newParticles = Array.from({ length: 150 }, (_, i) => ({
         id: i,
-        x: Math.random() * 200 - 100,
-        y: Math.random() * 200 - 100,
-        size: Math.random() * 8 + 2,
-        duration: Math.random() * 1 + 1,
+        x: (Math.random() - 0.5) * 300,
+        y: (Math.random() - 0.5) * 300,
+        size: Math.random() * 10 + 3,
+        duration: Math.random() * 1.5 + 1,
       }));
       setParticles(newParticles);
     }
