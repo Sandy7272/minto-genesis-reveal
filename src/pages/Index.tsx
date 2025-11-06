@@ -145,7 +145,7 @@ const Index = () => {
   }, [showParticles]);
 
   return (
-    <div className="relative h-screen overflow-x-hidden">
+    <div className="relative overflow-x-hidden">
       {/* Background gradient */}
       <div className="fixed inset-0 bg-gradient-to-b from-background to-background-secondary" />
       
@@ -240,6 +240,9 @@ const Index = () => {
           <div className="w-1.5 h-1.5 bg-primary rounded-full animate-float" />
         </div>
       </div>
+      
+      {/* Spacer to create scroll distance */}
+      <div className="h-[3000px]" />
     </div>
   );
 };
