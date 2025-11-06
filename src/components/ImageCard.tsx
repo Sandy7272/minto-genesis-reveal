@@ -7,10 +7,11 @@ interface ImageCardProps {
 export const ImageCard = ({ image, title, index }: ImageCardProps) => {
   return (
     <div
-      className="group relative overflow-hidden rounded-2xl bg-card border-2 transition-all duration-500 hover:scale-105"
+      className="group relative overflow-hidden rounded-2xl bg-card border-2 transition-all duration-500 hover:scale-105 will-change-transform"
       style={{
-        width: "250px",
-        height: "250px",
+        width: "100%",
+        maxWidth: "250px",
+        aspectRatio: "1 / 1",
         borderColor: "hsl(var(--primary))",
         boxShadow: "0 0 15px hsl(var(--primary) / 0.5)",
         animation: `float ${6 + index * 0.2}s ease-in-out infinite`,

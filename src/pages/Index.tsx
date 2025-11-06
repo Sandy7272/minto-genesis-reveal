@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion } from "framer-motion";
 import { ImageCard } from "@/components/ImageCard";
 import { ParticleExplosion } from "@/components/ParticleExplosion";
 import { Model3D } from "@/components/Model3D";
@@ -151,8 +152,11 @@ const Index = () => {
       {/* Grid background with mint green */}
       <div className="fixed inset-0 grid-background-mint opacity-10" />
       
-      {/* Radial glow */}
-      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-primary/10 blur-[120px] pointer-events-none" />
+      {/* Volumetric haze layers */}
+      <div className="fixed inset-0 volumetric-haze-bg opacity-60" />
+      
+      {/* Radial glow with breathing effect */}
+      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-primary/10 blur-[120px] pointer-events-none animate-glow-pulse" />
 
       {/* Main hero section - pinned */}
       <div
@@ -162,18 +166,18 @@ const Index = () => {
         {/* Hero text - fades out on scroll */}
         <div
           ref={heroTextRef}
-          className="text-center mb-16 z-10"
+          className="text-center mb-16 z-10 px-4"
         >
-          <h1 className="text-6xl md:text-8xl font-bold mb-6 gradient-text">
+          <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold mb-4 md:mb-6 gradient-text leading-tight">
             Image to 3D
           </h1>
-          <p className="text-xl md:text-2xl text-foreground-secondary">
+          <p className="text-lg sm:text-xl md:text-2xl text-foreground-secondary">
             Transform any image into reality
           </p>
         </div>
 
-        {/* 5-column horizontal grid */}
-        <div className="grid grid-cols-5 gap-6 max-w-6xl px-8">
+        {/* Responsive grid - 5 columns desktop, 3 tablet, 2 mobile */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 max-w-6xl px-4 sm:px-8">
           {demoItems.map((item, index) => (
             <div
               key={index}
@@ -200,20 +204,28 @@ const Index = () => {
         {/* Final text and CTA - initially hidden */}
         <div
           ref={finalTextRef}
-          className="absolute bottom-24 left-1/2 -translate-x-1/2 text-center space-y-6 opacity-0 max-w-3xl px-8"
+          className="absolute bottom-16 sm:bottom-24 left-1/2 -translate-x-1/2 text-center space-y-4 sm:space-y-6 opacity-0 max-w-3xl px-4 sm:px-8 w-full"
         >
-          <h2 className="text-4xl md:text-6xl font-bold text-foreground">
+          <h2 className="text-2xl sm:text-4xl md:text-6xl font-bold text-foreground leading-tight">
             Transform Images Into Reality
           </h2>
-          <p className="text-lg md:text-xl text-foreground-secondary">
+          <p className="text-base sm:text-lg md:text-xl text-foreground-secondary">
             AI-powered Image to 3D Model Generator
           </p>
           
           <Button
-            className="group relative mt-8 px-8 py-6 text-lg font-semibold bg-primary text-primary-foreground hover:bg-primary/90 rounded-2xl transition-all duration-300 glow-mint hover:glow-mint-strong"
+            className="group relative mt-4 sm:mt-8 px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg font-semibold bg-primary text-primary-foreground hover:bg-primary/90 rounded-2xl transition-all duration-300 glow-mint hover:glow-mint-strong cta-magnetic"
           >
             <span className="relative z-10">Try Demo →</span>
+            {/* Bloom effect */}
             <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary-glow to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm" />
+            {/* Pulsing ring on hover */}
+            <motion.div
+              className="absolute inset-0 rounded-2xl border-2 border-primary"
+              initial={{ scale: 1, opacity: 0 }}
+              whileHover={{ scale: 1.2, opacity: 0 }}
+              transition={{ duration: 0.6, repeat: Infinity }}
+            />
           </Button>
         </div>
       </div>
