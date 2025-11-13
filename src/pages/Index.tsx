@@ -7,21 +7,17 @@ import { ParticleExplosion } from "@/components/ParticleExplosion";
 import { Model3D } from "@/components/Model3D";
 import { Button } from "@/components/ui/button";
 
-// Import demo images
-import headphoneImg from "@/assets/demo-headphone.jpg";
-import shoeImg from "@/assets/demo-shoe.jpg";
+// Import chair image
 import chairImg from "@/assets/demo-chair.jpg";
-import plantImg from "@/assets/demo-plant.jpg";
-import watchImg from "@/assets/demo-watch.jpg";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const demoItems = [
-  { image: headphoneImg, title: "Wireless Headphones" },
-  { image: shoeImg, title: "Athletic Footwear" },
-  { image: chairImg, title: "Modern Chair" },
-  { image: plantImg, title: "Indoor Plant" },
-  { image: watchImg, title: "Smart Watch" },
+  { image: chairImg, title: "Front View", angle: "front" },
+  { image: chairImg, title: "Side View", angle: "side" },
+  { image: chairImg, title: "Top View", angle: "top" },
+  { image: chairImg, title: "Angle View", angle: "angle" },
+  { image: chairImg, title: "Back View", angle: "back" },
 ];
 
 const Index = () => {
@@ -73,10 +69,14 @@ const Index = () => {
         pin: true,
         anticipatePin: 1,
         onUpdate: (self) => {
-          // Trigger particle explosion at specific point
-          if (self.progress > 0.4 && self.progress < 0.6 && !showParticles) {
+          // Trigger particles in range, regardless of direction
+          const inRange = self.progress > 0.4 && self.progress < 0.6;
+          
+          if (inRange && !showParticles) {
             setShowParticles(true);
-            setTimeout(() => setShowParticles(false), 2000);
+            setTimeout(() => setShowParticles(false), 1500);
+          } else if (!inRange && showParticles) {
+            setShowParticles(false);
           }
         },
       },
@@ -200,14 +200,21 @@ const Index = () => {
           </p>
         </div>
 
-        {/* Responsive grid - 5 columns desktop, 3 tablet, 2 mobile */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 max-w-6xl px-4 sm:px-8">
+        {/* Bento grid layout */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 auto-rows-[200px] gap-4 sm:gap-6 max-w-6xl px-4 sm:px-8">
           {demoItems.map((item, index) => (
             <div
               key={index}
               ref={(el) => {
                 if (el) cardsRef.current[index] = el;
               }}
+              className={`
+                ${index === 0 ? 'lg:col-span-2 lg:row-span-2' : ''}
+                ${index === 1 ? 'lg:col-span-1 lg:row-span-1' : ''}
+                ${index === 2 ? 'lg:col-span-1 lg:row-span-1' : ''}
+                ${index === 3 ? 'lg:col-span-1 lg:row-span-1' : ''}
+                ${index === 4 ? 'lg:col-span-3 lg:row-span-1' : ''}
+              `}
             >
               <ImageCard {...item} index={index} />
             </div>
