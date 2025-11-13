@@ -44,6 +44,25 @@ const Index = () => {
 
     if (!hero || cards.length !== 5) return;
 
+    // Calculate real card positions relative to viewport center
+    const getCardPositions = () => {
+      const viewportCenterX = window.innerWidth / 2;
+      const viewportCenterY = window.innerHeight / 2;
+      
+      return cards.map((card) => {
+        const rect = card.getBoundingClientRect();
+        const cardCenterX = rect.left + rect.width / 2;
+        const cardCenterY = rect.top + rect.height / 2;
+        
+        return {
+          x: viewportCenterX - cardCenterX,
+          y: viewportCenterY - cardCenterY
+        };
+      });
+    };
+
+    const positions = getCardPositions();
+
     // Create GSAP timeline with ScrollTrigger
     const timeline = gsap.timeline({
       scrollTrigger: {
@@ -77,14 +96,11 @@ const Index = () => {
       .to(
         cards,
         {
-          x: (i) => {
-            // Calculate convergence to center
-            const centerOffset = [200, 100, 0, -100, -200];
-            return -centerOffset[i];
-          },
-          y: 0,
+          x: (i) => positions[i].x,
+          y: (i) => positions[i].y,
           scale: 0.6,
           duration: 0.4,
+          stagger: 0.05,
           ease: "power2.inOut",
         },
         0
@@ -138,7 +154,15 @@ const Index = () => {
         0.9
       );
 
+    // Handle window resize
+    const handleResize = () => {
+      ScrollTrigger.refresh();
+    };
+
+    window.addEventListener('resize', handleResize);
+
     return () => {
+      window.removeEventListener('resize', handleResize);
       timeline.kill();
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
